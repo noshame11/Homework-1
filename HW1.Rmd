@@ -1,0 +1,120 @@
+---
+title: "Data Science Homework #1"
+author: "Vincent Tam"
+date: "September 19, 2018"
+output: html_document
+---
+## R Markdown
+## Preparation - Upload tidyverse
+```{r Upload Tidyverse, echo=FALSE}
+## Code will be executed but not displayed; results are included
+library(tidyverse) 
+
+```
+## Problem 1 
+```{r Problem 1 Tibble Dataframe, echo=FALSE} 
+## Code will be executed but not displayed; results are not included
+## Set seed to ensure reproducibility
+set.seed(1)
+## Tibble data frame
+## Create vectors
+problem1_df = tibble(
+## Numeric Vector Random 10 numbers from 0 to 5  
+  vec_randomnumber = runif(10, min = 0, max = 5),
+## Logical Vector of Greater than 2
+  vec_greaterthantwo = c(vec_randomnumber) > 2,
+## Character Vector Ungulate Animals
+  vec_hoofed_animal = c("zebra", "deer", "rhinoceros", "tapir", "llama", "pig", "hippopotamus", "camel", "ass", "giraffe"),
+## Factor Vector Even or Odd Toed
+  vec_ungulate_type = c("odd-toed", "even-toed", "odd-toed", "odd-toed", "even-toed", "even-toed", "even-toed", "even-toed", "odd-toed", "even-toed")
+  )
+## Extract variables
+problem1_df$vec_randomnumber
+problem1_df$vec_greaterthantwo
+problem1_df$vec_hoofed_animal
+problem1_df$vec_ungulate_type
+## Mean of variables
+mean(problem1_df$vec_randomnumber)
+mean(problem1_df$vec_greaterthantwo)
+mean(problem1_df$vec_hoofed_animal)
+mean(problem1_df$vec_ungulate_type)
+## means for numeric and logical variables will return a number while non-numeric or logical arguments will lead to: "argument is not numeric or logical: returning NA[1] NA"
+```
+## Code Chunk 1 
+```{r Convert Variables to Numeric, eval=FALSE}
+##code will be displayed but not executed; results are not included
+as.numeric(problem1_df$vec_greaterthantwo)
+as.numeric(problem1_df$vec_hoofed_animal)
+as.numeric(problem1_df$vec_ungulate_type)
+## Conversion of logical variables to numeric produces "0" and "1", corresponding with "False" and "True", respectively. Conversion of characters and factors gives no results but the message: "argument is not numeric or logical: returning NA" 
+
+```
+## Code Chunk 2
+```{r Convert Variables from Character to Factor to Numeric, eval=FALSE}
+## Convert Character to Factor to Numeric
+as.numeric(as.factor(problem1_df$vec_hoofed_animal))
+## Convert Factor to Character to Numeric
+as.numeric(as.character(problem1_df$vec_ungulate_type))
+##Character to Factor to Numeric resulted in numbers while Factor to Character to Numeric led to a message: "NAs introduced by coercion". It's like R is making fun of me, "NA NA NA NA"
+```
+## Problem #2
+```{r Problem 2 Tibble Dataframe, echo=FALSE}
+## Code will be executed but not displayed; results are included
+## Create vectors
+problem2_df = tibble(
+## x: a random sample of size 1000 from a standard Normal distribution
+  vec_x = rnorm(1000),
+## y: a random sample of size 1000 from a standard Normal distribution
+  vec_y = rnorm(1000),
+## A logical vector indicating whether x + y > 0
+  vec_sumgreaterthan0 = c(vec_x + vec_y) > 0,
+## A numeric vector created by coercing the above logical vector
+  vec_logicalnumeric = as.numeric(vec_sumgreaterthan0),
+## A factor vector created by coercing the above logical vector
+  vec_logicalfactor = as.factor(vec_sumgreaterthan0))
+## Extract Variables
+problem2_df$vec_x
+problem2_df$vec_y
+problem2_df$vec_sumgreaterthan0
+problem2_df$vec_logicalnumeric
+problem2_df$vec_logicalfactor
+```
+## Short Description of Problem 2 Vector
+```{r Short Description Tibble Dataframe, echo=FALSE}
+length(problem2_df$vec_x)
+length(problem2_df$vec_y)
+length(problem2_df$vec_sumgreaterthan0)
+length(problem2_df$vec_logicalnumeric)
+length(problem2_df$vec_logicalfactor)
+median(problem2_df$vec_x)
+mean(problem2_df$vec_x)
+prop.table(amount <- table(problem2_df$vec_sumgreaterthan0))
+```
+## Scatterplotting
+```{r Three Scatterplots Tibble Dataframe, echo=FALSE}
+## Reproducibility
+set.seed(1)
+## Scatterplot 1, x vs y, logical colorpoints
+plot1_df = tibble(
+  x = problem2_df$vec_x,
+  y = problem2_df$vec_y
+)
+ggplot(plot1_df, aes(color = problem2_df$vec_sumgreaterthan0, x = x, y = y)) + geom_point()
+## False points are colored Salmon and True points are colored Aquamarine
+## Save Scatterplot 1 to directory
+ggsave("scatter_plot.pdf", height = 4, width = 6)
+## Scatterplot 2, x vs y, numeric colorpoints
+plot2_df = tibble(
+  x = problem2_df$vec_x,
+  y = problem2_df$vec_y
+)
+ggplot(plot2_df, aes(color = problem2_df$vec_logicalnumeric, x = x, y = y)) + geom_point()
+## Points are numeric but color patterning is similar to logical vector. where it would be false, points are black, and where it would be true, points are robin blue
+## Scatterplot 3, x vs y, factor colorpoints
+plot3_df = tibble(
+  x = problem2_df$vec_x,
+  y = problem2_df$vec_y
+)
+ggplot(plot3_df, aes(color = problem2_df$vec_logicalfactor, x = x, y = y)) + geom_point()
+## Like Plot 1, False points are colored Salmon and True points are colored Aquamarine
+```
